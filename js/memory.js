@@ -1,36 +1,43 @@
 $(function() {
 
 	var util = app.util;
-	var MAX_INT8 = Math.pow(2, 8);
-	var MAX_INT16 = Math.pow(2, 16);
 
 	// encapsulates CPU register and memory registers
 	var Register = function() {
 
 	}
 
-	var CPURegister = function() {
+	Register.prototype.getValue = function() {};
 
-	}
+	var SingleRegister = function(size) {
 
-	var SingleCPURegister = function(value, size) {
-
-		this.value = 0;
-		this.setValue(value);
 		this.size = size;
 	}
 
-	SingleCPURegister.prototype.getValue = function() {
+	SingleRegister.prototype.getSize() = function() {
+
+		return this.size;
+	}
+
+	var CPURegister = function(value, size) {
+
+		Register.call(this, size);
+
+		this.value = 0;
+		this.setValue(value);
+	}
+
+	CPURegister.prototype.getValue = function() {
 
 		return this.value;
 	}
 
-	SingleCPURegister.prototype.setValue = function(value) {
+	CPURegister.prototype.setValue = function(value) {
 
 		this.value = value % Math.pow(2, size*8);
 	}
 
-	var CompoundCPURegister = function(registers) {
+	var CompoundRegister = function(registers) {
 
 		this.registers = registers;
 		this.size = 0;
@@ -39,11 +46,11 @@ $(function() {
 
 			var register = registers[i];
 			this.accumulatedSizes.push(this.size*8);
-			this.size += register.size;
+			this.size += register.getSize();
 		}
 	}
 
-	CompoundCPURegister.prototype.getValue = function() {
+	CompoundRegister.prototype.getValue = function() {
 
 		var value = 0;
 
@@ -55,13 +62,13 @@ $(function() {
 		return value;
 	}
 
-	CompoundCPURegister.prototype.setValue = function(value) {
+	CompoundRegister.prototype.setValue = function(value) {
 
 		for(var i = this.registers.length - 1; i >= 0; i--) {
 
 			var register = this.registers[i];
 			register.setValue(value);
-			value = value >>> register.size*8; 
+			value = value >>> register.getSize()*8; 
 		}
 	}
 
@@ -81,10 +88,10 @@ $(function() {
 		this.value = value % MAX_INT8;
 	}
 
-	util.inherit(Register, MemoryRegister);
-	util.inherit(Register, CPURegister);
-	util.inherit(CPURegister, CompoundCPURegister);
-	util.inherit(CPURegister, SingleCPURegister);
+	util.inherit(Register, SingleRegister);
+	util.inherit(Register, CompoundRegister);
+	util.inherit(SingleRegister, MemoryRegister);
+	util.inherit(SingleRegister, CPURegister);
 
 	// memory
 	var memory = function() {
