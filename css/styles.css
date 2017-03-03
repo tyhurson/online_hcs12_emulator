@@ -1,0 +1,16 @@
+body {
+	font-family: Arial;
+}
+h3 {
+	margin: 0px;
+}
+.container {
+
+	float: left;
+	width: 50%;
+}
+#source {
+
+	width: 100%;
+	height: 100%;
+}
