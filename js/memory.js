@@ -1,6 +1,7 @@
 $(function() {
 
 	var util = app.util;
+	var Integer = app.integer.Integer;
 
 	// encapsulates CPU register and memory registers
 	var Register = function() {
@@ -23,8 +24,7 @@ $(function() {
 
 		Register.call(this, size);
 
-		this.value = 0;
-		this.setValue(value);
+		this.setValue(new Integer(value, size));
 	}
 
 	CPURegister.prototype.getValue = function() {

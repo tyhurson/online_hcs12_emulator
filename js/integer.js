@@ -37,7 +37,7 @@ $(function() {
 
 		size = size || this.size;
 
-		return new Integer(Math.floor(this.getValue() / divisor.getValue(), size));
+		return new Integer(Math.floor(this.getValue() / divisor.getValue()), size);
 	}
 
 	Integer.prototype.modulo = function(divisor, size) {
